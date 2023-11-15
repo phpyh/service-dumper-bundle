@@ -52,12 +52,12 @@
         "sort-packages": true
     },
     "scripts": {
+        "check-require": "composer-require-checker check --config-file=composer-require-checker.json",
+        "check-unused": "composer-unused",
         "cleanup": "find var ! -path var ! -path var/.gitignore -exec rm -rf {} +",
         "fixcs": "php-cs-fixer fix --diff --verbose",
         "infection": "infection --threads=max --only-covered --show-mutations",
         "psalm": "psalm --show-info=true --no-diff",
-        "test": "phpunit",
-        "check-require": "composer-require-checker check --config-file=composer-require-checker.json",
-        "check-unused": "composer-unused"
+        "test": "phpunit"
     }
 }
