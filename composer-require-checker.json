@@ -1,0 +1,6 @@
+{
+    "symbol-whitelist": [
+        "Symfony\\Component\\VarDumper\\VarDumper",
+        "xdebug_break"
+    ]
+}
