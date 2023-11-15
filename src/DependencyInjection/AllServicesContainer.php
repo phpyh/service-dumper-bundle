@@ -30,7 +30,6 @@ final readonly class AllServicesContainer
     {
         /** @var list<string> */
         $containerIds = $this->container->getServiceIds();
-        /** @var list<string> */
         $privateIds = array_keys($this->privateServices->getProvidedServices());
 
         return [...$containerIds, ...$privateIds];
