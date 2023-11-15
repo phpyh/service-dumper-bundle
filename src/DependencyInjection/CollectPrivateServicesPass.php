@@ -10,6 +10,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
+ * This compiler pass is almost a copy of Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\TestServiceContainerWeakRefPass.
+ * The former is not used to avoid dependency on FrameworkBundle and test.service_container declaration details.
+ *
  * @internal
  * @psalm-internal PHPyh\ServiceDumperBundle
  */
