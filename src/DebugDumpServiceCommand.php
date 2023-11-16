@@ -35,7 +35,11 @@ final class DebugDumpServiceCommand extends Command
 
     protected function configure(): void
     {
-        $this->addArgument('ids', InputArgument::REQUIRED | InputArgument::IS_ARRAY);
+        $this->addArgument(
+            name: 'ids',
+            mode: InputArgument::REQUIRED | InputArgument::IS_ARRAY,
+            description: 'Full service id or a keyword.',
+        );
     }
 
     protected function interact(InputInterface $input, OutputInterface $output): void
@@ -46,26 +50,31 @@ final class DebugDumpServiceCommand extends Command
             throw new \LogicException('Container is empty.');
         }
 
-        $ids = $input->getArgument('ids');
+        $io = new SymfonyStyle($input, $output);
+        $ids = [];
 
-        foreach ($ids as &$id) {
+        foreach ($input->getArgument('ids') as $id) {
             if (\in_array($id, $serviceIds, true)) {
+                $ids[] = $id;
+
                 continue;
             }
 
-            $matchedServiceIds = $this->serviceFinder->find($serviceIds, $id);
+            $foundServiceIds = $this->serviceFinder->find($serviceIds, $id);
 
-            if ($matchedServiceIds === []) {
+            if ($foundServiceIds === []) {
                 throw new \LogicException(sprintf('No services matching "%s" found.', $id));
             }
 
-            if (\count($matchedServiceIds) === 1) {
-                $id = $matchedServiceIds[0];
+            if (\count($foundServiceIds) === 1) {
+                $ids[] = $foundServiceIds[0];
 
                 continue;
             }
 
-            $id = (new SymfonyStyle($input, $output))->askQuestion(new ChoiceQuestion('Select service', $matchedServiceIds));
+            /** @var non-empty-list<string> */
+            $answer = $io->askQuestion($this->createServiceChoiceQuestion($id, $foundServiceIds));
+            $ids = [...$ids, ...$answer];
         }
 
         $input->setArgument('ids', $ids);
@@ -84,5 +93,16 @@ final class DebugDumpServiceCommand extends Command
         $this->serviceDumper->dump($servicesById);
 
         return self::SUCCESS;
+    }
+
+    /**
+     * @param non-empty-list<string> $ids
+     */
+    private function createServiceChoiceQuestion(string $id, array $ids): ChoiceQuestion
+    {
+        $question = new ChoiceQuestion(sprintf('Here are the services, found for "%s", choose one or more', $id), $ids);
+        $question->setMultiselect(true);
+
+        return $question;
     }
 }
