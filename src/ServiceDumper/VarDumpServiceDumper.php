@@ -8,7 +8,6 @@ use PHPyh\ServiceDumperBundle\ServiceDumper;
 
 /**
  * @api
- * @codeCoverageIgnore
  */
 final readonly class VarDumpServiceDumper implements ServiceDumper
 {
