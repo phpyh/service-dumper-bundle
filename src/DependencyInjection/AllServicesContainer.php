@@ -33,11 +33,14 @@ final readonly class AllServicesContainer
     }
 
     /**
-     * @return list<string>
+     * @return non-empty-list<string>
      */
     public function ids(): array
     {
-        /** @var list<string> */
+        /**
+         * Non empty, because it always contains itself as 'service_container'.
+         * @var non-empty-list<string>
+         */
         $containerIds = $this->container->getServiceIds();
         $privateIds = array_keys($this->privateServices->getProvidedServices());
 

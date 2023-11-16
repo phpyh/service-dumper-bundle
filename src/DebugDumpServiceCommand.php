@@ -44,13 +44,8 @@ final class DebugDumpServiceCommand extends Command
 
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
-        $serviceIds = $this->container->ids();
-
-        if ($serviceIds === []) {
-            throw new \LogicException('Container is empty.');
-        }
-
         $io = new SymfonyStyle($input, $output);
+        $serviceIds = $this->container->ids();
         $ids = [];
 
         foreach ($input->getArgument('ids') as $id) {
