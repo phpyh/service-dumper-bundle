@@ -11,7 +11,7 @@ use Symfony\Component\VarDumper\VarDumper;
  * @api
  * @codeCoverageIgnore
  */
-final readonly class SymfonyServiceDumper implements ServiceDumper
+final readonly class SymfonyVarDumperServiceDumper implements ServiceDumper
 {
     public function dump(object $service): void
     {

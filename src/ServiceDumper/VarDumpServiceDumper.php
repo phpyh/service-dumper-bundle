@@ -10,7 +10,7 @@ use PHPyh\ServiceDumperBundle\ServiceDumper;
  * @api
  * @codeCoverageIgnore
  */
-final readonly class NativeServiceDumper implements ServiceDumper
+final readonly class VarDumpServiceDumper implements ServiceDumper
 {
     public function dump(object $service): void
     {

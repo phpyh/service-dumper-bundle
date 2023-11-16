@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PHPyh\ServiceDumperBundle;
 
 use PHPyh\ServiceDumperBundle\DependencyInjection\AllServicesContainer;
-use PHPyh\ServiceDumperBundle\ServiceDumper\NativeServiceDumper;
+use PHPyh\ServiceDumperBundle\ServiceDumper\VarDumpServiceDumper;
 use PHPyh\ServiceDumperBundle\ServiceFinder\BasicServiceFinder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -27,7 +27,7 @@ final class DebugDumpServiceCommand extends Command
      */
     public function __construct(
         private readonly AllServicesContainer $container,
-        private readonly ServiceDumper $serviceDumper = new NativeServiceDumper(),
+        private readonly ServiceDumper $serviceDumper = new VarDumpServiceDumper(),
         private readonly ServiceFinder $serviceFinder = new BasicServiceFinder(),
     ) {
         parent::__construct();

@@ -7,8 +7,8 @@ namespace PHPyh\ServiceDumperBundle;
 use PHPyh\ServiceDumperBundle\DependencyInjection\AllServicesContainer;
 use PHPyh\ServiceDumperBundle\DependencyInjection\CollectPrivateServicesPass;
 use PHPyh\ServiceDumperBundle\DependencyInjection\ResolvePrivateServicesPass;
-use PHPyh\ServiceDumperBundle\ServiceDumper\NativeServiceDumper;
-use PHPyh\ServiceDumperBundle\ServiceDumper\SymfonyServiceDumper;
+use PHPyh\ServiceDumperBundle\ServiceDumper\SymfonyVarDumperServiceDumper;
+use PHPyh\ServiceDumperBundle\ServiceDumper\VarDumpServiceDumper;
 use PHPyh\ServiceDumperBundle\ServiceDumper\XdebugServiceDumper;
 use PHPyh\ServiceDumperBundle\ServiceFinder\BasicServiceFinder;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -43,21 +43,17 @@ final class ServiceDumperBundle extends AbstractBundle
             ->children()
                 ->scalarNode('service_dumper')
                     ->info(sprintf(
-                        'Use %s, %s, %s or any valid service id with class that implements %s.',
-                        NativeServiceDumper::class,
-                        SymfonyServiceDumper::class,
-                        XdebugServiceDumper::class,
+                        'Use "var_dump", "symfony_var_dumper", "xdebug" or any valid service id with class that implements %s.',
                         ServiceDumper::class,
                     ))
-                    ->defaultValue(class_exists(VarDumper::class) ? SymfonyServiceDumper::class : NativeServiceDumper::class)
+                    ->defaultValue(class_exists(VarDumper::class) ? 'symfony_var_dumper' : 'var_dump')
                 ->end()
                 ->scalarNode('service_finder')
                     ->info(sprintf(
-                        'Use %s or any valid service id with class that implements %s.',
-                        BasicServiceFinder::class,
+                        'Use "basic" or any valid service id with class that implements %s.',
                         ServiceFinder::class,
                     ))
-                    ->defaultValue(BasicServiceFinder::class)
+                    ->defaultValue('basic')
                 ->end()
             ->end();
     }
@@ -66,10 +62,6 @@ final class ServiceDumperBundle extends AbstractBundle
     {
         /** @var array{service_dumper: string, service_finder: string} $config */
         $container->services()
-            ->set(NativeServiceDumper::class)
-            ->set(SymfonyServiceDumper::class)
-            ->set(XdebugServiceDumper::class)
-            ->set(BasicServiceFinder::class)
             ->set('phpyh.service_dumper.private_services', ServiceLocator::class)
                 ->args([[]])
             ->set(DebugDumpServiceCommand::class)
@@ -78,8 +70,16 @@ final class ServiceDumperBundle extends AbstractBundle
                         service('service_container'),
                         service('phpyh.service_dumper.private_services'),
                     ]),
-                    service($config['service_dumper']),
-                    service($config['service_finder']),
+                    match ($config['service_dumper']) {
+                        'var_dump' => inline_service(VarDumpServiceDumper::class),
+                        'symfony_var_dumper' => inline_service(SymfonyVarDumperServiceDumper::class),
+                        'xdebug' => inline_service(XdebugServiceDumper::class),
+                        default => service($config['service_dumper']),
+                    },
+                    match ($config['service_finder']) {
+                        'basic' => inline_service(BasicServiceFinder::class),
+                        default => service($config['service_finder']),
+                    },
                 ])
                 ->tag('console.command');
     }
