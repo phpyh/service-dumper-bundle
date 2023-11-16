@@ -1,5 +1,7 @@
 # PHPyh Service Dumper Bundle
 
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fphpyh%2Fservice-dumper-bundle%2F0.2.x)](https://dashboard.stryker-mutator.io/reports/github.com/phpyh/service-dumper-bundle/0.2.x)
+
 ## Installation
 
 ```shell

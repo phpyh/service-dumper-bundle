@@ -137,3 +137,5 @@ jobs:
         with:
           composer-options: --optimize-autoloader
       - run: composer infection
+        env:
+          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
