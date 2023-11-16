@@ -7,7 +7,7 @@ Symfony console command to dump dependency injection services.
 [![Total Downloads](https://poser.pugx.org/phpyh/service-dumper-bundle/downloads.png)](https://packagist.org/packages/phpyh/service-dumper-bundle)
 [![psalm-level](https://shepherd.dev/github/phpyh/service-dumper-bundle/level.svg)](https://shepherd.dev/github/phpyh/service-dumper-bundle)
 [![type-coverage](https://shepherd.dev/github/phpyh/service-dumper-bundle/coverage.svg)](https://shepherd.dev/github/phpyh/service-dumper-bundle)
-[![Code Coverage](https://codecov.io/gh/phpyh/service-dumper-bundle/branch/0.3.x/graph/badge.svg)](https://codecov.io/gh/phpyh/service-dumper-bundle)
+[![Code Coverage](https://codecov.io/gh/phpyh/service-dumper-bundle/branch/0.3.x/graph/badge.svg)](https://codecov.io/gh/phpyh/service-dumper-bundle/tree/0.3.x)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fphpyh%2Fservice-dumper-bundle%2F0.3.x)](https://dashboard.stryker-mutator.io/reports/github.com/phpyh/service-dumper-bundle/0.3.x)
 
 ## Installation
