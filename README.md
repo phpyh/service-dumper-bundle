@@ -23,7 +23,7 @@ phpyh_service_dumper:
 
 You can use `var_dump`, `symfony_var_dumper`, `xdebug` or any valid service id with class that implements `PHPyh\ServiceDumperBundle\ServiceDumper`.
 
-By default, `symfony_var_dumper` is used if `symfony/var-dumper` component is available, `var_dump` otherwise.
+By default, `symfony_var_dumper` is used if [Symfony VarDumper](https://symfony.com/doc/current/components/var_dumper.html) component is available, `var_dump` otherwise.
 
 ### service_finder
 
