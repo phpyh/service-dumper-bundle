@@ -20,6 +20,8 @@ composer require --dev phpyh/service-dumper-bundle
 bin/console service my_service another_service
 ```
 
+![Example](example.png)
+
 ## Configuration
 
 ### service_dumper
