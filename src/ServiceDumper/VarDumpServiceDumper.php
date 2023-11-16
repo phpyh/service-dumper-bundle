@@ -15,6 +15,6 @@ final readonly class VarDumpServiceDumper implements ServiceDumper
     public function dump(array $servicesById): void
     {
         /** @psalm-suppress ForbiddenCode */
-        var_dump(...array_values($servicesById));
+        var_dump($servicesById);
     }
 }
