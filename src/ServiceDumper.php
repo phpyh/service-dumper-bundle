@@ -9,5 +9,8 @@ namespace PHPyh\ServiceDumperBundle;
  */
 interface ServiceDumper
 {
-    public function dump(object $service): void;
+    /**
+     * @param non-empty-array<string, object> $servicesById
+     */
+    public function dump(array $servicesById): void;
 }

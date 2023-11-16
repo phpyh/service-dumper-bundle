@@ -17,7 +17,7 @@ composer require --dev phpyh/service-dumper-bundle
 ## Usage
 
 ```shell
-bin/console service my_service
+bin/console service my_service another_service
 ```
 
 ## Configuration

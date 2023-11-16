@@ -13,8 +13,11 @@ use Symfony\Component\VarDumper\VarDumper;
  */
 final readonly class SymfonyVarDumperServiceDumper implements ServiceDumper
 {
-    public function dump(object $service): void
+    public function dump(array $servicesById): void
     {
-        VarDumper::dump($service);
+        foreach ($servicesById as $id => $service) {
+            /** @psalm-suppress TooManyArguments */
+            VarDumper::dump($service, $id);
+        }
     }
 }

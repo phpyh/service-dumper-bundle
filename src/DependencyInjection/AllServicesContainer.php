@@ -35,11 +35,6 @@ final readonly class AllServicesContainer
         return [...$containerIds, ...$privateIds];
     }
 
-    public function has(string $id): bool
-    {
-        return $this->privateServices->has($id) || $this->container->has($id);
-    }
-
     /**
      * @throws ContainerExceptionInterface
      */

@@ -12,9 +12,9 @@ use PHPyh\ServiceDumperBundle\ServiceDumper;
  */
 final readonly class VarDumpServiceDumper implements ServiceDumper
 {
-    public function dump(object $service): void
+    public function dump(array $servicesById): void
     {
         /** @psalm-suppress ForbiddenCode */
-        var_dump($service);
+        var_dump(...array_values($servicesById));
     }
 }

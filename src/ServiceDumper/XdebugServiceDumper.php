@@ -12,7 +12,7 @@ use PHPyh\ServiceDumperBundle\ServiceDumper;
  */
 final readonly class XdebugServiceDumper implements ServiceDumper
 {
-    public function dump(object $service): void
+    public function dump(array $servicesById): void
     {
         xdebug_break();
     }

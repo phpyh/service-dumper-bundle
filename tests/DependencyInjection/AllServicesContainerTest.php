@@ -33,35 +33,6 @@ final class AllServicesContainerTest extends TestCase
         self::assertSame(['service_container', 'b'], $serviceIds);
     }
 
-    public function testItHasExistingMainContainerService(): void
-    {
-        $container = new Container();
-        $container->set('a', new \stdClass());
-        $allServicesContainer = new AllServicesContainer($container, $this->createLocator());
-
-        $has = $allServicesContainer->has('a');
-
-        self::assertTrue($has);
-    }
-
-    public function testItHasExistingPrivateService(): void
-    {
-        $allServicesContainer = new AllServicesContainer(new Container(), $this->createLocator(['b' => new \stdClass()]));
-
-        $has = $allServicesContainer->has('b');
-
-        self::assertTrue($has);
-    }
-
-    public function testItDoesNotHaveNonExistingService(): void
-    {
-        $allServicesContainer = new AllServicesContainer(new Container(), $this->createLocator());
-
-        $hasA = $allServicesContainer->has('a');
-
-        self::assertFalse($hasA);
-    }
-
     public function testItReturnsExistingMainContainerService(): void
     {
         $a = new \stdClass();

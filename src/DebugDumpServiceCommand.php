@@ -40,45 +40,49 @@ final class DebugDumpServiceCommand extends Command
 
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
-        $input->setArgument('ids', array_map(
-            fn (string $id): string => $this->interactivelyResolveId($input, $output, $id),
-            $input->getArgument('ids'),
-        ));
+        $serviceIds = $this->container->ids();
+
+        if ($serviceIds === []) {
+            throw new \LogicException('Container is empty.');
+        }
+
+        $ids = $input->getArgument('ids');
+
+        foreach ($ids as &$id) {
+            if (\in_array($id, $serviceIds, true)) {
+                continue;
+            }
+
+            $matchedServiceIds = $this->serviceFinder->find($serviceIds, $id);
+
+            if ($matchedServiceIds === []) {
+                throw new \LogicException(sprintf('No services matching "%s" found.', $id));
+            }
+
+            if (\count($matchedServiceIds) === 1) {
+                $id = $matchedServiceIds[0];
+
+                continue;
+            }
+
+            $id = (new SymfonyStyle($input, $output))->askQuestion(new ChoiceQuestion('Select service', $matchedServiceIds));
+        }
+
+        $input->setArgument('ids', $ids);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        foreach ($input->getArgument('ids') as $id) {
-            $this->serviceDumper->dump($this->container->get($id));
+        /** @var non-empty-list<string> $ids */
+        $ids = $input->getArgument('ids');
+        $servicesById = [];
+
+        foreach ($ids as $id) {
+            $servicesById[$id] = $this->container->get($id);
         }
+
+        $this->serviceDumper->dump($servicesById);
 
         return self::SUCCESS;
-    }
-
-    private function interactivelyResolveId(InputInterface $input, OutputInterface $output, string $id): string
-    {
-        if ($this->container->has($id)) {
-            return $id;
-        }
-
-        $ids = $this->container->ids();
-
-        if ($ids === []) {
-            throw new \LogicException('Container is empty.');
-        }
-
-        $matchedServiceIds = $this->serviceFinder->find($ids, $id);
-
-        if ($matchedServiceIds === []) {
-            throw new \LogicException(sprintf('No services matching "%s" found.', $id));
-        }
-
-        if (\count($matchedServiceIds) === 1) {
-            return $matchedServiceIds[0];
-        }
-
-        /** @var string */
-        return (new SymfonyStyle($input, $output))
-            ->askQuestion(new ChoiceQuestion('Select service', $matchedServiceIds));
     }
 }
