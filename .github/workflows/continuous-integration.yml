@@ -88,6 +88,23 @@ jobs:
           composer-options: --optimize-autoloader
       - run: composer fixcs -- --dry-run --diff --format=checkstyle --ansi | cs2pr
 
+  rector:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [8.2]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: none
+      - uses: ramsey/composer-install@v2
+        with:
+          composer-options: --optimize-autoloader
+      - run: composer rector -- --dry-run
+
   psalm:
     runs-on: ubuntu-latest
     strategy:
