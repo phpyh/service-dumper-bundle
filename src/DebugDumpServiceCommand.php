@@ -26,7 +26,7 @@ final class DebugDumpServiceCommand extends Command
      * @psalm-suppress PossiblyUnusedMethod
      */
     public function __construct(
-        private readonly AllServicesContainer $container,
+        private readonly AllServicesContainer $container = new AllServicesContainer(),
         private readonly ServiceDumper $serviceDumper = new VarDumpServiceDumper(),
         private readonly ServiceFinder $serviceFinder = new BasicServiceFinder(),
     ) {

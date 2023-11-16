@@ -16,60 +16,64 @@ final class AllServicesContainerTest extends TestCase
     public function testItReturnsMainContainerServiceIds(): void
     {
         $container = new Container();
-        $container->set('a', new \stdClass());
-        $allServicesContainer = new AllServicesContainer($container, $this->createLocator());
+        $container->set('public', new \stdClass());
+        $allServicesContainer = new AllServicesContainer(container: $container);
 
         $serviceIds = $allServicesContainer->ids();
 
-        self::assertSame(['service_container', 'a'], $serviceIds);
+        self::assertSame(['service_container', 'public'], $serviceIds);
     }
 
     public function testItReturnsPrivateServiceIds(): void
     {
-        $allServicesContainer = new AllServicesContainer(new Container(), $this->createLocator(['b' => new \stdClass()]));
+        $allServicesContainer = new AllServicesContainer(privateServices: $this->createLocator([
+            'private' => new \stdClass(),
+        ]));
 
         $serviceIds = $allServicesContainer->ids();
 
-        self::assertSame(['service_container', 'b'], $serviceIds);
+        self::assertSame(['service_container', 'private'], $serviceIds);
     }
 
     public function testItReturnsExistingMainContainerService(): void
     {
-        $a = new \stdClass();
+        $public = new \stdClass();
         $container = new Container();
-        $container->set('a', $a);
-        $allServicesContainer = new AllServicesContainer($container, $this->createLocator());
+        $container->set('public', $public);
+        $allServicesContainer = new AllServicesContainer(container: $container);
 
-        $service = $allServicesContainer->get('a');
+        $service = $allServicesContainer->get('public');
 
-        self::assertSame($a, $service);
+        self::assertSame($public, $service);
     }
 
     public function testItReturnsExistingPrivateService(): void
     {
-        $b = new \stdClass();
-        $allServicesContainer = new AllServicesContainer(new Container(), $this->createLocator(['b' => $b]));
+        $private = new \stdClass();
+        $allServicesContainer = new AllServicesContainer(privateServices: $this->createLocator([
+            'private' => $private,
+        ]));
 
-        $service = $allServicesContainer->get('b');
+        $service = $allServicesContainer->get('private');
 
-        self::assertSame($b, $service);
+        self::assertSame($private, $service);
     }
 
     public function testItThrowsForNonExistingService(): void
     {
-        $allServicesContainer = new AllServicesContainer(new Container(), $this->createLocator());
+        $allServicesContainer = new AllServicesContainer();
 
         try {
-            $allServicesContainer->get('a');
+            $allServicesContainer->get('public');
         } catch (\Throwable $exception) {
             self::assertInstanceOf(NotFoundExceptionInterface::class, $exception);
         }
     }
 
     /**
-     * @param array<string, object> $services
+     * @param non-empty-array<string, object> $services
      */
-    private function createLocator(array $services = []): ServiceLocator
+    private function createLocator(array $services): ServiceLocator
     {
         return new ServiceLocator(array_map(
             static fn (object $service): \Closure => static fn (): object => $service,

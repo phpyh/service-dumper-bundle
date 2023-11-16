@@ -7,6 +7,7 @@ namespace PHPyh\ServiceDumperBundle\DependencyInjection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
 /**
@@ -16,12 +17,20 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 final readonly class AllServicesContainer
 {
     /**
-     * @param ServiceProviderInterface<object> $privateServices
+     * @var ServiceProviderInterface<object>
+     */
+    private ServiceProviderInterface $privateServices;
+
+    /**
+     * @param ?ServiceProviderInterface<object> $privateServices
      */
     public function __construct(
-        private Container $container,
-        private ServiceProviderInterface $privateServices,
-    ) {}
+        private Container $container = new Container(),
+        ?ServiceProviderInterface $privateServices = null,
+    ) {
+        /** @var ServiceProviderInterface<object> */
+        $this->privateServices = $privateServices ?? new ServiceLocator([]);
+    }
 
     /**
      * @return list<string>
