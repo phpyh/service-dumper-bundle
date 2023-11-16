@@ -15,7 +15,7 @@ final readonly class BasicServiceFinder implements ServiceFinder
      * @param positive-int $maxResults
      */
     public function __construct(
-        private int $maxResults = 20,
+        private int $maxResults = 50,
     ) {}
 
     public function find(array $serviceIds, string $searchString): array
