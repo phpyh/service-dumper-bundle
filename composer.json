@@ -1,6 +1,6 @@
 {
     "name": "phpyh/service-dumper-bundle",
-    "description": "PHPyh Service Dumper Bundle",
+    "description": "Symfony console command to dump dependency injection services",
     "license": "MIT",
     "type": "symfony-bundle",
     "authors": [
