@@ -17,20 +17,12 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 final readonly class AllServicesContainer
 {
     /**
-     * @var ServiceProviderInterface<object>
-     */
-    private ServiceProviderInterface $privateServices;
-
-    /**
-     * @param ?ServiceProviderInterface<object> $privateServices
+     * @param ServiceProviderInterface<object> $privateServices
      */
     public function __construct(
         private Container $container = new Container(),
-        ?ServiceProviderInterface $privateServices = null,
-    ) {
-        /** @var ServiceProviderInterface<object> */
-        $this->privateServices = $privateServices ?? new ServiceLocator([]);
-    }
+        private ServiceProviderInterface $privateServices = new ServiceLocator([]),
+    ) {}
 
     /**
      * @return non-empty-list<string>

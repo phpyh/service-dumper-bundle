@@ -41,6 +41,12 @@
     </ignoreExceptions>
 
     <issueHandlers>
+        <!-- Reported in https://github.com/vimeo/psalm/issues/10384 -->
+        <InvalidParamDefault>
+            <errorLevel type="suppress">
+                <file name="src/DependencyInjection/AllServicesContainer.php"/>
+            </errorLevel>
+        </InvalidParamDefault>
         <MissingThrowsDocblock>
             <errorLevel type="suppress">
                 <directory name="tests"/>
