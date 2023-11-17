@@ -54,31 +54,4 @@ final class BasicServiceFinderTest extends TestCase
 
         self::assertSame(['й', 'aйc'], $foundId);
     }
-
-    public function testItLimitsResultsTo50ByDefault(): void
-    {
-        $finder = new BasicServiceFinder();
-
-        $foundId = $finder->find(array_map('strval', range(1, 60)), '');
-
-        self::assertSame(array_map('strval', range(1, 50)), $foundId);
-    }
-
-    public function testItLimitsResults(): void
-    {
-        $finder = new BasicServiceFinder(maxResults: 1);
-
-        $foundId = $finder->find(range('a', 'z'), '');
-
-        self::assertSame(['a'], $foundId);
-    }
-
-    public function testItReturnsAllIdsForEmptySearch(): void
-    {
-        $finder = new BasicServiceFinder();
-
-        $foundId = $finder->find(['a', 'й', 'aйc'], '');
-
-        self::assertSame(['a', 'й', 'aйc'], $foundId);
-    }
 }

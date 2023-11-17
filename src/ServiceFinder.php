@@ -11,6 +11,7 @@ interface ServiceFinder
 {
     /**
      * @param non-empty-list<string> $serviceIds
+     * @param non-empty-string $searchString
      * @return list<string>
      */
     public function find(array $serviceIds, string $searchString): array;

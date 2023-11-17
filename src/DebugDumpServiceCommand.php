@@ -15,22 +15,61 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-/**
- * @internal
- * @psalm-internal PHPyh\ServiceDumperBundle
- */
 #[AsCommand(name: 'debug:dump-service', description: 'Dump dependency injection service(s)', aliases: ['service'])]
 final class DebugDumpServiceCommand extends Command
 {
-    /**
-     * @psalm-suppress PossiblyUnusedMethod
-     */
     public function __construct(
         private readonly AllServicesContainer $container = new AllServicesContainer(),
         private readonly ServiceDumper $serviceDumper = new VarDumpServiceDumper(),
         private readonly ServiceFinder $serviceFinder = new BasicServiceFinder(),
     ) {
         parent::__construct();
+    }
+
+    /**
+     * @internal
+     * @psalm-internal PHPyh\ServiceDumperBundle
+     * @param callable(string, non-empty-list<string>): non-empty-list<string> $selectServiceIds
+     * @param non-empty-list<string> $serviceIds
+     * @param array<string> $inputIds
+     * @return non-empty-list<string>
+     */
+    public static function interactivelyResolveServiceIds(
+        array $serviceIds,
+        ServiceFinder $serviceFinder,
+        callable $selectServiceIds,
+        array $inputIds,
+    ): array {
+        if ($inputIds === []) {
+            return $selectServiceIds('Select service(s)', $serviceIds);
+        }
+
+        $resolvedIds = [];
+
+        foreach ($inputIds as $inputId) {
+            if (\in_array($inputId, $serviceIds, true)) {
+                $resolvedIds[] = $inputId;
+
+                continue;
+            }
+
+            if ($inputId === '') {
+                $resolvedIds = [...$resolvedIds, ...$selectServiceIds('Select service(s)', $serviceIds)];
+
+                continue;
+            }
+
+            $foundServiceIds = $serviceFinder->find($serviceIds, $inputId);
+
+            $resolvedIds = [...$resolvedIds, ...match (\count($foundServiceIds)) {
+                0 => throw new \RuntimeException(sprintf('No services matching "%s" found.', $inputId)),
+                1 => $foundServiceIds,
+                default => $selectServiceIds(sprintf('Select service(s), matching "%s"', $inputId), $foundServiceIds),
+            }];
+        }
+
+        /** @var non-empty-list<string> */
+        return $resolvedIds;
     }
 
     protected function configure(): void
@@ -45,34 +84,18 @@ final class DebugDumpServiceCommand extends Command
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);
-        $serviceIds = $this->container->ids();
-        $ids = [];
+        $input->setArgument('ids', self::interactivelyResolveServiceIds(
+            serviceIds: $this->container->ids(),
+            serviceFinder: $this->serviceFinder,
+            selectServiceIds: static function (string $title, array $options) use ($io): array {
+                $question = new ChoiceQuestion($title, $options);
+                $question->setMultiselect(true);
 
-        foreach ($input->getArgument('ids') as $id) {
-            if (\in_array($id, $serviceIds, true)) {
-                $ids[] = $id;
-
-                continue;
-            }
-
-            $foundServiceIds = $this->serviceFinder->find($serviceIds, $id);
-
-            if ($foundServiceIds === []) {
-                throw new \LogicException(sprintf('No services matching "%s" found.', $id));
-            }
-
-            if (\count($foundServiceIds) === 1) {
-                $ids[] = $foundServiceIds[0];
-
-                continue;
-            }
-
-            /** @var non-empty-list<string> */
-            $answer = $io->askQuestion($this->createServiceChoiceQuestion($id, $foundServiceIds));
-            $ids = [...$ids, ...$answer];
-        }
-
-        $input->setArgument('ids', $ids);
+                /** @var non-empty-list<string> */
+                return $io->askQuestion($question);
+            },
+            inputIds: $input->getArgument('ids'),
+        ));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -88,16 +111,5 @@ final class DebugDumpServiceCommand extends Command
         $this->serviceDumper->dump($servicesById);
 
         return self::SUCCESS;
-    }
-
-    /**
-     * @param non-empty-list<string> $ids
-     */
-    private function createServiceChoiceQuestion(string $id, array $ids): ChoiceQuestion
-    {
-        $question = new ChoiceQuestion(sprintf('Here are the services, found for "%s", choose one or more', $id), $ids);
-        $question->setMultiselect(true);
-
-        return $question;
     }
 }
