@@ -59,9 +59,9 @@
     "scripts": {
         "check-require": "composer-require-checker check --config-file=composer-require-checker.json",
         "check-unused": "composer-unused",
-        "cleanup": "find var ! -path var ! -path var/.gitignore -exec rm -rf {} +",
         "fixcs": "php-cs-fixer fix --diff --verbose",
         "infection": "infection --threads=max --only-covered --show-mutations",
+        "pre-command-run": "mkdir -p var",
         "psalm": "psalm --show-info=true --no-diff",
         "rector": "rector process",
         "test": "phpunit"
