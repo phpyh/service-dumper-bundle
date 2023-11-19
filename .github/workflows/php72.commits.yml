@@ -26,7 +26,7 @@ jobs:
           find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name '_source' -exec rm -rf {} +
           cd _source
           mv composer.php72.json ../composer.json
-          mv src .gitattributes .gitignore LICENSE ..
+          mv src var .gitattributes .gitignore LICENSE ..
           cd ..
           rm -rf _source
           ls -lah
