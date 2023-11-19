@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * @internal
  * @psalm-internal PHPyh\ServiceDumperBundle
  */
-final readonly class ResolvePrivateServicesPass implements CompilerPassInterface
+final class ResolvePrivateServicesPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {

@@ -9,7 +9,7 @@ use PHPyh\ServiceDumperBundle\ServiceFinder;
 /**
  * @api
  */
-final readonly class BasicServiceFinder implements ServiceFinder
+final class BasicServiceFinder implements ServiceFinder
 {
     public function find(array $serviceIds, string $searchString): array
     {

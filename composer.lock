@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e87dfef74c4809d25ddd05e3e236551",
+    "content-hash": "c7929bae9aab8eb6768c9819f71238b5",
     "packages": [
         {
             "name": "psr/container",
@@ -4333,16 +4333,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.24.2",
+            "version": "1.24.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "bcad8d995980440892759db0c32acae7c8e79442"
+                "reference": "12f01d214f1c73b9c91fdb3b1c415e4c70652083"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/bcad8d995980440892759db0c32acae7c8e79442",
-                "reference": "bcad8d995980440892759db0c32acae7c8e79442",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/12f01d214f1c73b9c91fdb3b1c415e4c70652083",
+                "reference": "12f01d214f1c73b9c91fdb3b1c415e4c70652083",
                 "shasum": ""
             },
             "require": {
@@ -4374,22 +4374,22 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.2"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.3"
             },
-            "time": "2023-09-26T12:28:12+00:00"
+            "time": "2023-11-18T20:15:32+00:00"
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.41",
+            "version": "1.10.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "c6174523c2a69231df55bdc65b61655e72876d76"
+                "reference": "fc2316508de5453140b5cb3d3f8683a33e92f26a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/c6174523c2a69231df55bdc65b61655e72876d76",
-                "reference": "c6174523c2a69231df55bdc65b61655e72876d76",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/fc2316508de5453140b5cb3d3f8683a33e92f26a",
+                "reference": "fc2316508de5453140b5cb3d3f8683a33e92f26a",
                 "shasum": ""
             },
             "require": {
@@ -4438,7 +4438,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-05T12:57:57+00:00"
+            "time": "2023-11-17T15:26:57+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -5088,16 +5088,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "0.18.8",
+            "version": "0.18.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "374bab157a41f6849556edc53125f856eb6c1c8c"
+                "reference": "f36bc0a707fd8af301df5108740ce41f9db8eded"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/374bab157a41f6849556edc53125f856eb6c1c8c",
-                "reference": "374bab157a41f6849556edc53125f856eb6c1c8c",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/f36bc0a707fd8af301df5108740ce41f9db8eded",
+                "reference": "f36bc0a707fd8af301df5108740ce41f9db8eded",
                 "shasum": ""
             },
             "require": {
@@ -5132,7 +5132,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/0.18.8"
+                "source": "https://github.com/rectorphp/rector/tree/0.18.10"
             },
             "funding": [
                 {
@@ -5140,7 +5140,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-11-14T15:30:19+00:00"
+            "time": "2023-11-16T19:42:21+00:00"
         },
         {
             "name": "sanmai/later",
@@ -7647,9 +7647,12 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2",
+        "php": "^8.1",
         "ext-mbstring": "*"
     },
     "platform-dev": [],
+    "platform-overrides": {
+        "php": "8.1"
+    },
     "plugin-api-version": "2.6.0"
 }

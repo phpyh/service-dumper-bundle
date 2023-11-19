@@ -9,7 +9,7 @@ use PHPyh\ServiceDumperBundle\ServiceDumper;
 /**
  * @api
  */
-final readonly class VarDumpServiceDumper implements ServiceDumper
+final class VarDumpServiceDumper implements ServiceDumper
 {
     public function dump(array $servicesById): void
     {

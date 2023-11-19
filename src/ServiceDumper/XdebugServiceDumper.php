@@ -10,7 +10,7 @@ use PHPyh\ServiceDumperBundle\ServiceDumper;
  * @api
  * @codeCoverageIgnore
  */
-final readonly class XdebugServiceDumper implements ServiceDumper
+final class XdebugServiceDumper implements ServiceDumper
 {
     public function dump(array $servicesById): void
     {

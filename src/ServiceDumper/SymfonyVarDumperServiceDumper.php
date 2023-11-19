@@ -13,11 +13,11 @@ use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
 /**
  * @api
  */
-final readonly class SymfonyVarDumperServiceDumper implements ServiceDumper
+final class SymfonyVarDumperServiceDumper implements ServiceDumper
 {
     public function __construct(
-        private DataDumperInterface $dumper = new CliDumper(),
-        private ClonerInterface $cloner = new VarCloner(),
+        private readonly DataDumperInterface $dumper = new CliDumper(),
+        private readonly ClonerInterface $cloner = new VarCloner(),
     ) {}
 
     public function dump(array $servicesById): void

@@ -14,14 +14,14 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
  * @internal
  * @psalm-internal PHPyh\ServiceDumperBundle
  */
-final readonly class AllServicesContainer
+final class AllServicesContainer
 {
     /**
      * @param ServiceProviderInterface<object> $privateServices
      */
     public function __construct(
-        private Container $container = new Container(),
-        private ServiceProviderInterface $privateServices = new ServiceLocator([]),
+        private readonly Container $container = new Container(),
+        private readonly ServiceProviderInterface $privateServices = new ServiceLocator([]),
     ) {}
 
     /**

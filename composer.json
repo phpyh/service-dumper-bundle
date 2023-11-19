@@ -10,14 +10,14 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.1",
         "ext-mbstring": "*",
         "psr/container": "^2",
-        "symfony/config": "^5 || ^6",
-        "symfony/console": "^5 || ^6",
-        "symfony/dependency-injection": "^5 || ^6",
-        "symfony/http-kernel": "^5 || ^6",
-        "symfony/service-contracts": "^2 || ^3"
+        "symfony/config": "^6",
+        "symfony/console": "^6",
+        "symfony/dependency-injection": "^6",
+        "symfony/http-kernel": "^6",
+        "symfony/service-contracts": "^3"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.36",
@@ -50,6 +50,9 @@
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
             "infection/extension-installer": true
+        },
+        "platform": {
+            "php": "8.1"
         },
         "sort-packages": true
     },
