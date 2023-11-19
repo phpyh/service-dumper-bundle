@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PHPyh\ServiceDumperBundle\DependencyInjection;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use PHPyh\ServiceDumperBundle\TestKernel;
 use Psr\Container\ContainerInterface;
@@ -14,8 +13,10 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\Kernel;
 
-#[CoversClass(CollectPrivateServicesPass::class)]
-#[CoversClass(ResolvePrivateServicesPass::class)]
+/**
+ * @covers \PHPyh\ServiceDumperBundle\DependencyInjection\CollectPrivateServicesPass
+ * @covers \PHPyh\ServiceDumperBundle\DependencyInjection\ResolvePrivateServicesPass
+ */
 final class PrivateServicesPassesTest extends TestCase
 {
     public function testTheyDoNotFailInEmptyContainer(): void

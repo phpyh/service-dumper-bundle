@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PHPyh\ServiceDumperBundle;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use PHPyh\ServiceDumperBundle\ServiceDumper\SymfonyVarDumperServiceDumper;
@@ -19,7 +18,9 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 
-#[CoversClass(ServiceDumperBundle::class)]
+/**
+ * @covers \PHPyh\ServiceDumperBundle\ServiceDumperBundle
+ */
 final class ServiceDumperBundleConfigurationTest extends TestCase
 {
     public function testItUsesSymfonyVarDumperByDefault(): void
@@ -122,8 +123,10 @@ final class ServiceDumperBundleConfigurationTest extends TestCase
         $kernel->boot();
     }
 
-    #[TestWith(['debug:dump-service'])]
-    #[TestWith(['service'])]
+    /**
+     * @testWith ["debug:dump-service"]
+     *           ["service"]
+     */
     public function testCommandCanBeCalled(string $name): void
     {
         $cli = new Application(new TestKernel([ServiceDumperBundle::class]));

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         cacheDirectory="var/phpunit"
+         cacheResultFile="var/.phpunit.result.cache"
          executionOrder="depends,defects"
-         requireCoverageMetadata="true"
+         forceCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          failOnRisky="true"
          failOnWarning="true"
@@ -19,9 +19,9 @@
         </testsuite>
     </testsuites>
 
-    <source restrictDeprecations="true" restrictNotices="true" restrictWarnings="true">
+    <coverage>
         <include>
             <directory>src</directory>
         </include>
-    </source>
+    </coverage>
 </phpunit>

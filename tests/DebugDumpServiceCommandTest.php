@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace PHPyh\ServiceDumperBundle;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Tester\CommandTester;
 
-#[CoversClass(DebugDumpServiceCommand::class)]
+/**
+ * @covers \PHPyh\ServiceDumperBundle\DebugDumpServiceCommand
+ */
 final class DebugDumpServiceCommandTest extends TestCase
 {
     public function testItThrowsIfNoIdPassedInNonInteractiveMode(): void

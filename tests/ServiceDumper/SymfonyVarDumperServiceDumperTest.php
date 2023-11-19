@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PHPyh\ServiceDumperBundle\ServiceDumper;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
-#[CoversClass(SymfonyVarDumperServiceDumper::class)]
+/**
+ * @covers \PHPyh\ServiceDumperBundle\ServiceDumper\SymfonyVarDumperServiceDumper
+ */
 final class SymfonyVarDumperServiceDumperTest extends TestCase
 {
     public function testItDumpsIdsAndObjects(): void

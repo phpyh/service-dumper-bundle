@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace PHPyh\ServiceDumperBundle\DependencyInjection;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
-#[CoversClass(AllServicesContainer::class)]
+/**
+ * @covers \PHPyh\ServiceDumperBundle\DependencyInjection\AllServicesContainer
+ */
 final class AllServicesContainerTest extends TestCase
 {
     public function testItReturnsMainContainerServiceIds(): void

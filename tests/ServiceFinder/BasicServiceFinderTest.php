@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace PHPyh\ServiceDumperBundle\ServiceFinder;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(BasicServiceFinder::class)]
+/**
+ * @covers \PHPyh\ServiceDumperBundle\ServiceFinder\BasicServiceFinder
+ */
 final class BasicServiceFinderTest extends TestCase
 {
     public function testItFindsByFullMatch(): void
