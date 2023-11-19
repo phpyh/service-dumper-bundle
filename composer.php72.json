@@ -1,0 +1,33 @@
+{
+    "name": "phpyh/service-dumper-bundle",
+    "description": "Symfony console command to dump dependency injection services",
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Valentin Udaltsov",
+            "email": "udaltsov.valentin@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ext-mbstring": "*",
+        "psr/container": "^1 || ^2",
+        "symfony/config": "^5",
+        "symfony/console": "^5",
+        "symfony/dependency-injection": "^5",
+        "symfony/http-kernel": "^5",
+        "symfony/service-contracts": "^1 || ^2"
+    },
+    "autoload": {
+        "psr-4": {
+            "PHPyh\\ServiceDumperBundle\\": "src/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.2.5"
+        },
+        "sort-packages": true
+    }
+}

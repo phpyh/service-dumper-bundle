@@ -1,0 +1,37 @@
+name: Push PHP 7.2 commits
+
+on:
+  push:
+    branches: ['*.*.x']
+
+concurrency:
+  group: ${{ github.workflow }}
+
+permissions:
+  contents: write
+
+jobs:
+  push:
+    # do not run on forks
+    if: github.repository == 'phpyh/service-dumper-bundle'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}.72
+      - uses: actions/checkout@v4
+        with:
+          path: _source
+      - run: |
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name '_source' -exec rm -rf {} +
+          cd _source
+          mv composer.php72.json ../composer.json
+          mv src .gitattributes .gitignore LICENSE ..
+          cd ..
+          rm -rf _source
+          ls -lah
+      - run: |
+          git config user.name 'Valentin Udaltsov'
+          git config user.email 'udaltsov.valentin@gmail.com'
+          git add --all
+          (git commit -m 'Synchronized ${{ github.sha }} from ${{ github.ref_name }}' && git push) || true
