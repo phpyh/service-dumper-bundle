@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace PHPyh\ServiceDumperBundle;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use PHPyh\ServiceDumperBundle\ServiceDumper\SymfonyVarDumperServiceDumper;
 use PHPyh\ServiceDumperBundle\ServiceDumper\VarDumpServiceDumper;
 use PHPyh\ServiceDumperBundle\ServiceDumper\XdebugServiceDumper;
 use PHPyh\ServiceDumperBundle\ServiceFinder\BasicServiceFinder;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -118,5 +120,16 @@ final class ServiceDumperBundleConfigurationTest extends TestCase
             }, PassConfig::TYPE_AFTER_REMOVING);
         });
         $kernel->boot();
+    }
+
+    #[TestWith(['debug:dump-service'])]
+    #[TestWith(['service'])]
+    public function testCommandCanBeCalled(string $name): void
+    {
+        $cli = new Application(new TestKernel([ServiceDumperBundle::class]));
+
+        $command = $cli->get($name);
+
+        self::assertSame('debug:dump-service', $command->getName());
     }
 }

@@ -7,7 +7,6 @@ namespace PHPyh\ServiceDumperBundle;
 use PHPyh\ServiceDumperBundle\DependencyInjection\AllServicesContainer;
 use PHPyh\ServiceDumperBundle\ServiceDumper\VarDumpServiceDumper;
 use PHPyh\ServiceDumperBundle\ServiceFinder\BasicServiceFinder;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,7 +14,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'debug:dump-service', description: 'Dump dependency injection service(s)', aliases: ['service'])]
 final class DebugDumpServiceCommand extends Command
 {
     public function __construct(
@@ -24,6 +22,16 @@ final class DebugDumpServiceCommand extends Command
         private readonly ServiceFinder $serviceFinder = new BasicServiceFinder(),
     ) {
         parent::__construct();
+    }
+
+    public static function getDefaultName(): ?string
+    {
+        return 'debug:dump-service|service';
+    }
+
+    public static function getDefaultDescription(): ?string
+    {
+        return 'Dump dependency injection service(s)';
     }
 
     /**
