@@ -3,7 +3,7 @@ name: Continuous Integration
 on:
   pull_request: ~
   push:
-    branches: ['*.x']
+    branches: ['*.*.x']
 
 jobs:
   composer-validate:
