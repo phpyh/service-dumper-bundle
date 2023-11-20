@@ -16,11 +16,23 @@ use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
  */
 final class SymfonyVarDumperServiceDumper implements ServiceDumper
 {
-    public function __construct(
-        private readonly DataDumperInterface $dumper = new CliDumper(),
-        private readonly ClonerInterface $cloner = new VarCloner(),
-    ) {}
-
+    /**
+     * @readonly
+     * @var \Symfony\Component\VarDumper\Dumper\DataDumperInterface
+     */
+    private $dumper;
+    /**
+     * @readonly
+     * @var \Symfony\Component\VarDumper\Cloner\ClonerInterface
+     */
+    private $cloner;
+    public function __construct(DataDumperInterface $dumper = null, ClonerInterface $cloner = null)
+    {
+        $dumper = $dumper ?? new CliDumper();
+        $cloner = $cloner ?? new VarCloner();
+        $this->dumper = $dumper;
+        $this->cloner = $cloner;
+    }
     private static function supportsLabels(): bool
     {
         // Both labels and ScalarStub appeared in 6.3.

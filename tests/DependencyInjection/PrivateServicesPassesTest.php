@@ -100,7 +100,7 @@ final class PrivateServicesPassesTest extends TestCase
      */
     private function createKernel(callable $configureContainer): Kernel
     {
-        return new TestKernel(configureContainer: static function (ContainerBuilder $container) use ($configureContainer): void {
+        return new TestKernel([], static function (ContainerBuilder $container) use ($configureContainer): void {
             $container->addCompilerPass(new CollectPrivateServicesPass(), PassConfig::TYPE_BEFORE_REMOVING, -32);
             $container->addCompilerPass(new ResolvePrivateServicesPass(), PassConfig::TYPE_AFTER_REMOVING);
             $configureContainer($container);

@@ -10,31 +10,22 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^7.2.5 || ~8.0.0",
         "ext-mbstring": "*",
-        "psr/container": "^2",
-        "symfony/config": "^6",
-        "symfony/console": "^6",
-        "symfony/dependency-injection": "^6",
-        "symfony/http-kernel": "^6",
-        "symfony/service-contracts": "^3"
+        "psr/container": "^1 || ^2",
+        "symfony/config": "^5.0",
+        "symfony/console": "^5.3",
+        "symfony/dependency-injection": "^5.0",
+        "symfony/http-kernel": "^5.0",
+        "symfony/service-contracts": "^1 || ^2"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "^2.36",
-        "friendsofphp/php-cs-fixer": "^3.26.1",
-        "icanhazstring/composer-unused": "^0.8.10",
-        "infection/infection": "^0.27.7",
-        "maglnet/composer-require-checker": "^4.7.1",
-        "phpunit/phpunit": "^9",
-        "phpyh/coding-standard": "^2.5.0",
-        "psalm/plugin-phpunit": "^0.18.4",
-        "psalm/plugin-symfony": "^5.0",
-        "rector/rector": "^0.18.8",
-        "symfony/filesystem": "^6.3",
-        "symfony/framework-bundle": "^6.3",
-        "symfony/process": "^6.3",
-        "symfony/var-dumper": "^6.3.4",
-        "vimeo/psalm": "^5.15.0"
+        "ergebnis/composer-normalize": "^2.19",
+        "phpunit/phpunit": "^8.5.34 || ^9.6.13",
+        "psalm/plugin-symfony": "^3.1.10",
+        "symfony/framework-bundle": "^5.2",
+        "symfony/var-dumper": "^5.0",
+        "vimeo/psalm": "^4.30"
     },
     "autoload": {
         "psr-4": {
@@ -48,25 +39,13 @@
     },
     "config": {
         "allow-plugins": {
-            "ergebnis/composer-normalize": true,
-            "infection/extension-installer": true
+            "ergebnis/composer-normalize": true
         },
         "sort-packages": true
     },
     "scripts": {
-        "check-require": "composer-require-checker check --config-file=composer-require-checker.json",
-        "check-unused": "composer-unused",
-        "fixcs": "php-cs-fixer fix --diff --verbose",
-        "infection": "infection --threads=max --only-covered --show-mutations",
         "pre-command-run": "mkdir -p var",
         "psalm": "psalm --show-info=true --no-diff",
-        "rector": "rector process",
-        "sf5": [
-            "rm -rf var/sf5",
-            "cp -r sf5 var/sf5",
-            "cp -r src tests .gitattributes .gitignore LICENSE var/sf5/",
-            "cd var/sf5 && rector process --config=downgrade.rector.php && rm downgrade.rector.php"
-        ],
         "test": "phpunit"
     }
 }

@@ -53,9 +53,8 @@ final class CollectPrivateServicesPass implements CompilerPassInterface
             }
         }
 
-        $container->getDefinition('phpyh.service_dumper.private_services')->replaceArgument(0, array_map(
-            static fn (Reference $reference): ServiceClosureArgument => new ServiceClosureArgument($reference),
-            $privateServices,
-        ));
+        $container->getDefinition('phpyh.service_dumper.private_services')->replaceArgument(0, array_map(static function (Reference $reference) : ServiceClosureArgument {
+            return new ServiceClosureArgument($reference);
+        }, $privateServices));
     }
 }

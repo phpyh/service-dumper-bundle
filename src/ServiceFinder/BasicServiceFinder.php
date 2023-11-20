@@ -17,7 +17,7 @@ final class BasicServiceFinder implements ServiceFinder
         $found = [];
 
         foreach ($serviceIds as $serviceId) {
-            if (str_contains(mb_strtolower($serviceId), $searchString)) {
+            if (strpos(mb_strtolower($serviceId), $searchString) !== false) {
                 $found[] = $serviceId;
             }
         }

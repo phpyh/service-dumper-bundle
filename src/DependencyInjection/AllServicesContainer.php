@@ -17,13 +17,25 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 final class AllServicesContainer
 {
     /**
+     * @readonly
+     * @var \Symfony\Component\DependencyInjection\Container
+     */
+    private $container;
+    /**
+     * @var ServiceProviderInterface<object>
+     * @readonly
+     */
+    private $privateServices;
+    /**
      * @param ServiceProviderInterface<object> $privateServices
      */
-    public function __construct(
-        private readonly Container $container = new Container(),
-        private readonly ServiceProviderInterface $privateServices = new ServiceLocator([]),
-    ) {}
-
+    public function __construct(Container $container = null, ServiceProviderInterface $privateServices = null)
+    {
+        $container = $container ?? new Container();
+        $privateServices = $privateServices ?? new ServiceLocator([]);
+        $this->container = $container;
+        $this->privateServices = $privateServices;
+    }
     /**
      * @return non-empty-list<string>
      */
@@ -36,7 +48,7 @@ final class AllServicesContainer
         $containerIds = $this->container->getServiceIds();
         $privateIds = array_keys($this->privateServices->getProvidedServices());
 
-        return [...$containerIds, ...$privateIds];
+        return array_merge(is_array($containerIds) ? $containerIds : iterator_to_array($containerIds), $privateIds);
     }
 
     /**
@@ -46,7 +58,7 @@ final class AllServicesContainer
     {
         try {
             return $this->privateServices->get($id);
-        } catch (NotFoundExceptionInterface) {
+        } catch (NotFoundExceptionInterface $exception) {
             /** @var object */
             return $this->container->get($id);
         }

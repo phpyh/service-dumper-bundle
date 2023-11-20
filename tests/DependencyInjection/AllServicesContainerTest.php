@@ -76,9 +76,10 @@ final class AllServicesContainerTest extends TestCase
      */
     private function createLocator(array $services): ServiceLocator
     {
-        return new ServiceLocator(array_map(
-            static fn (object $service): \Closure => static fn (): object => $service,
-            $services,
-        ));
+        return new ServiceLocator(array_map(static function (object $service) : \Closure {
+            return static function () use ($service) : object {
+                return $service;
+            };
+        }, $services));
     }
 }

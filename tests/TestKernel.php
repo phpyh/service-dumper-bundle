@@ -16,22 +16,37 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 final class TestKernel extends Kernel
 {
-    private readonly string $tempDir;
+    /**
+     * @var iterable<class-string<BundleInterface>>
+     * @readonly
+     */
+    private $bundleClasses = [];
+    /**
+     * @var ?callable(ContainerBuilder):void
+     */
+    private $configureContainer = null;
+    /**
+     * @readonly
+     * @var string
+     */
+    private $projectDir = __DIR__ . '/..';
+    /**
+     * @readonly
+     * @var string
+     */
+    private $tempDir;
 
     /**
      * @param iterable<class-string<BundleInterface>> $bundleClasses
      * @param ?callable(ContainerBuilder): void $configureContainer
      */
-    public function __construct(
-        private readonly iterable $bundleClasses = [],
-        private $configureContainer = null,
-        string $environment = 'test',
-        bool $debug = true,
-        private readonly string $projectDir = __DIR__ . '/..',
-    ) {
+    public function __construct(iterable $bundleClasses = [], $configureContainer = null, string $environment = 'test', bool $debug = true, string $projectDir = __DIR__ . '/..')
+    {
+        $this->bundleClasses = $bundleClasses;
+        $this->configureContainer = $configureContainer;
+        $this->projectDir = $projectDir;
         parent::__construct($environment, $debug);
-
-        $this->tempDir = uniqid(sys_get_temp_dir() . '/symfony_test_kernel/', more_entropy: true);
+        $this->tempDir = uniqid(sys_get_temp_dir() . '/symfony_test_kernel/', true);
     }
 
     public function __destruct()

@@ -46,17 +46,11 @@ final class ServiceDumperBundle extends Bundle implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->children()
                 ->scalarNode('service_dumper')
-                    ->info(sprintf(
-                        'Use "var_dump", "symfony_var_dumper", "xdebug" or any valid service id with class that implements %s.',
-                        ServiceDumper::class,
-                    ))
+                    ->info(sprintf('Use "var_dump", "symfony_var_dumper", "xdebug" or any valid service id with class that implements %s.', ServiceDumper::class))
                     ->defaultValue(class_exists(VarDumper::class) ? 'symfony_var_dumper' : 'var_dump')
                 ->end()
                 ->scalarNode('service_finder')
-                    ->info(sprintf(
-                        'Use "basic" or any valid service id with class that implements %s.',
-                        ServiceFinder::class,
-                    ))
+                    ->info(sprintf('Use "basic" or any valid service id with class that implements %s.', ServiceFinder::class))
                     ->defaultValue('basic')
                 ->end()
             ->end();
@@ -67,10 +61,15 @@ final class ServiceDumperBundle extends Bundle implements ConfigurationInterface
     public function getContainerExtension(): ?ExtensionInterface
     {
         return new class ($this) extends Extension {
-            public function __construct(
-                private readonly ServiceDumperBundle $bundle,
-            ) {}
-
+            /**
+             * @readonly
+             * @var \PHPyh\ServiceDumperBundle\ServiceDumperBundle
+             */
+            private $bundle;
+            public function __construct(ServiceDumperBundle $bundle)
+            {
+                $this->bundle = $bundle;
+            }
             public function getAlias(): string
             {
                 return 'phpyh_service_dumper';
@@ -92,16 +91,26 @@ final class ServiceDumperBundle extends Bundle implements ConfigurationInterface
                             new Reference('service_container'),
                             new Reference('phpyh.service_dumper.private_services'),
                         ]),
-                        match ($config['service_dumper']) {
-                            'var_dump' => new Definition(VarDumpServiceDumper::class),
-                            'symfony_var_dumper' => new Definition(SymfonyVarDumperServiceDumper::class),
-                            'xdebug' => new Definition(XdebugServiceDumper::class),
-                            default => new Reference($config['service_dumper']),
-                        },
-                        match ($config['service_finder']) {
-                            'basic' => new Definition(BasicServiceFinder::class),
-                            default => new Reference($config['service_finder']),
-                        },
+                        (function () use ($config) {
+                            switch ($config['service_dumper']) {
+                                case 'var_dump':
+                                    return new Definition(VarDumpServiceDumper::class);
+                                case 'symfony_var_dumper':
+                                    return new Definition(SymfonyVarDumperServiceDumper::class);
+                                case 'xdebug':
+                                    return new Definition(XdebugServiceDumper::class);
+                                default:
+                                    return new Reference($config['service_dumper']);
+                            }
+                        })(),
+                        (function () use ($config) {
+                            switch ($config['service_finder']) {
+                                case 'basic':
+                                    return new Definition(BasicServiceFinder::class);
+                                default:
+                                    return new Reference($config['service_finder']);
+                            }
+                        })(),
                     ])
                     ->addTag('console.command');
             }
