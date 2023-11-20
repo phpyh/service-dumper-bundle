@@ -13,9 +13,13 @@ jobs:
     if: github.repository == 'phpyh/service-dumper-bundle'
     runs-on: ubuntu-latest
     steps:
+      - id: get_branch
+        run: |
+          raw=$(git branch -r --contains ${{ github.ref }})
+          echo "branch=${raw##*/}" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}.5
+          ref: ${{ steps.get_branch.outputs.branch }}.5
           fetch-depth: 0
       - run: |
           HASH=$(git --no-pager log --grep="${{ github.sha }}" -1 --pretty=format:"%H")
