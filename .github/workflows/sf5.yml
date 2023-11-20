@@ -15,6 +15,8 @@ jobs:
     # do not run on forks
     if: github.repository == 'phpyh/service-dumper-bundle'
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.push.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
@@ -31,16 +33,21 @@ jobs:
           ref: ${{ github.ref_name }}.5
           path: var/sf5/git
       - name: Push changes
+        id: push
         run: |
           cd var/sf5
           mv git/.git . && rm -rf git
           git config user.name 'Valentin Udaltsov'
           git config user.email 'udaltsov.valentin@gmail.com'
           git add --all
-          (git commit -m 'Synchronized ${{ github.sha }} from ${{ github.ref_name }}' && git push) || true
+          if git commit -m 'Synchronized ${{ github.sha }} from ${{ github.ref_name }}'; then \
+            git push; \
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
 
   composer-validate:
     needs: push
+    if: ${{ needs.push.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,6 +62,7 @@ jobs:
 
   composer-normalize:
     needs: push
+    if: ${{ needs.push.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -72,6 +80,7 @@ jobs:
 
   psalm:
     needs: push
+    if: ${{ needs.push.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -90,6 +99,7 @@ jobs:
 
   test:
     needs: push
+    if: ${{ needs.push.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
