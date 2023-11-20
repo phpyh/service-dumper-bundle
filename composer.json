@@ -51,9 +51,6 @@
             "ergebnis/composer-normalize": true,
             "infection/extension-installer": true
         },
-        "platform": {
-            "php": "8.1"
-        },
         "sort-packages": true
     },
     "scripts": {
