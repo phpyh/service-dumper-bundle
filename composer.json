@@ -64,7 +64,7 @@
         "sf5": [
             "rm -rf var/sf5",
             "cp -r sf5 var/sf5",
-            "cp -r src tests .gitattributes .gitignore LICENSE var/sf5/",
+            "cp -r src tests .gitattributes .gitignore LICENSE phpunit.xml.dist var/sf5/",
             "cd var/sf5 && rector process --config=downgrade.rector.php && rm downgrade.rector.php"
         ],
         "test": "phpunit"
