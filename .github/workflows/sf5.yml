@@ -21,9 +21,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Create branch if not exists
         run: |
-          if [ -z $(git ls-remote --heads origin refs/heads/${{ github.ref_name }}-sf5) ]; then \
-            git checkout -b ${{ github.ref_name }}-sf5; \
-            git push origin ${{ github.ref_name }}-sf5; \
+          if [ -z $(git ls-remote --heads origin refs/heads/${{ github.ref_name }}.5) ]; then \
+            git checkout -b ${{ github.ref_name }}.5; \
+            git push origin ${{ github.ref_name }}.5; \
+            git checkout ${{ github.ref_name }}; \
           fi
       - uses: shivammathur/setup-php@v2
         with:
@@ -36,7 +37,7 @@ jobs:
       - run: composer sf5
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}-sf5
+          ref: ${{ github.ref_name }}.5
           path: var/sf5/git
       - name: Push changes
         id: push
@@ -58,7 +59,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}-sf5
+          ref: ${{ github.ref_name }}.5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 7.2
@@ -73,7 +74,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}-sf5
+          ref: ${{ github.ref_name }}.5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 7.2
@@ -91,7 +92,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}-sf5
+          ref: ${{ github.ref_name }}.5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 7.2
@@ -114,7 +115,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}-sf5
+          ref: ${{ github.ref_name }}.5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
