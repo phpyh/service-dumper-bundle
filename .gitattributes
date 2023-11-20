@@ -1,19 +1,19 @@
 /.github/                       export-ignore
+/sf5/                           export-ignore
 /stubs/                         export-ignore
 /tests/                         export-ignore
 /var/                           export-ignore
 /.gitattributes                 export-ignore
 /.gitignore                     export-ignore
 /.php-cs-fixer.dist.php         export-ignore
+/baseline.xml                   export-ignore
 /composer.lock                  export-ignore
-/composer.php72.json            export-ignore
 /composer-require-checker.json  export-ignore
 /example.png                    export-ignore
 /infection.json5.dist           export-ignore
 /phpunit.xml.dist               export-ignore
 /psalm.xml.dist                 export-ignore
 /rector.php                     export-ignore
-/rector.php72.php               export-ignore
 
 *.php diff=php
 *.phar -diff

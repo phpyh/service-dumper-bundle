@@ -1,0 +1,111 @@
+name: Prepare Symfony 5 Version
+
+on:
+  push:
+    branches: ['*.*.x']
+
+concurrency:
+  group: ${{ github.workflow }}
+
+permissions:
+  contents: write
+
+jobs:
+  push:
+    # do not run on forks
+    if: github.repository == 'phpyh/service-dumper-bundle'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          tools: composer:v2
+          coverage: none
+      - uses: ramsey/composer-install@v2
+        with:
+          composer-options: --optimize-autoloader
+      - run: composer sf5
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}.5
+          path: var/sf5/git
+      - name: Push changes
+        run: |
+          cd var/sf5
+          mv git/.git . && rm -rf git
+          git config user.name 'Valentin Udaltsov'
+          git config user.email 'udaltsov.valentin@gmail.com'
+          git add --all
+          (git commit -m 'Synchronized ${{ github.sha }} from ${{ github.ref_name }}' && git push) || true
+
+  composer-validate:
+    needs: push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}.5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.2
+          tools: composer:v2
+          coverage: none
+      - run: composer validate --strict --ansi
+
+  composer-normalize:
+    needs: push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}.5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.2
+          tools: composer:v2
+          coverage: none
+      - uses: ramsey/composer-install@v2
+        with:
+          composer-options: --optimize-autoloader
+      - run: composer normalize --dry-run --diff --ansi
+
+  psalm:
+    needs: push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}.5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.2
+          tools: composer:v2
+          coverage: none
+      - uses: ramsey/composer-install@v2
+        with:
+          composer-options: --optimize-autoloader
+          dependency-versions: lowest
+      - run: composer psalm -- --php-version=${{ matrix.php }} --stats --output-format=github
+
+  test:
+    needs: push
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [7.2, 7.3, 7.4, 8.0]
+        dependencies: [lowest, highest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}.5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: none
+      - uses: ramsey/composer-install@v2
+        with:
+          composer-options: --optimize-autoloader
+          dependency-versions: ${{ matrix.dependencies }}
+      - run: composer test -- --colors=always --order-by=random

@@ -61,6 +61,12 @@
         "pre-command-run": "mkdir -p var",
         "psalm": "psalm --show-info=true --no-diff",
         "rector": "rector process",
+        "sf5": [
+            "rm -rf var/sf5",
+            "cp -r sf5 var/sf5",
+            "cp -r src tests .gitattributes .gitignore LICENSE var/sf5/",
+            "cd var/sf5 && rector process --config=downgrade.rector.php && rm downgrade.rector.php"
+        ],
         "test": "phpunit"
     }
 }

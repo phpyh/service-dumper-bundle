@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.30.0@d0bc6e25d89f649e4f36a534f330f8bb4643dd69">
+  <file src="src/DebugDumpServiceCommand.php">
+    <InvalidArgument occurrences="1">
+      <code>$selectServiceIds('Select service(s)', $serviceIds)</code>
+    </InvalidArgument>
+    <InvalidScalarArgument occurrences="1">
+      <code>$foundServiceIds</code>
+    </InvalidScalarArgument>
+    <RedundantConditionGivenDocblockType occurrences="1">
+      <code>is_array($selectServiceIds('Select service(s)', $serviceIds))</code>
+    </RedundantConditionGivenDocblockType>
+  </file>
+  <file src="src/DependencyInjection/AllServicesContainer.php">
+    <DocblockTypeContradiction occurrences="1">
+      <code>iterator_to_array($containerIds)</code>
+    </DocblockTypeContradiction>
+    <MissingThrowsDocblock occurrences="1">
+      <code>get</code>
+    </MissingThrowsDocblock>
+    <MixedArgument occurrences="1">
+      <code>$containerIds</code>
+    </MixedArgument>
+    <MixedPropertyTypeCoercion occurrences="1">
+      <code>$privateServices</code>
+    </MixedPropertyTypeCoercion>
+    <MixedReturnTypeCoercion occurrences="2">
+      <code>array_merge(is_array($containerIds) ? $containerIds : iterator_to_array($containerIds), $privateIds)</code>
+      <code>non-empty-list&lt;string&gt;</code>
+    </MixedReturnTypeCoercion>
+    <RedundantConditionGivenDocblockType occurrences="1">
+      <code>is_array($containerIds)</code>
+    </RedundantConditionGivenDocblockType>
+  </file>
+</files>
