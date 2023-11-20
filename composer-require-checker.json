@@ -1,5 +1,6 @@
 {
     "symbol-whitelist": [
+        "Symfony\\Component\\VarDumper\\Caster\\ScalarStub",
         "Symfony\\Component\\VarDumper\\Cloner\\ClonerInterface",
         "Symfony\\Component\\VarDumper\\Cloner\\VarCloner",
         "Symfony\\Component\\VarDumper\\Dumper\\CliDumper",
