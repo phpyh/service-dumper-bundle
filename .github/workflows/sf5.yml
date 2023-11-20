@@ -19,6 +19,12 @@ jobs:
       changed: ${{ steps.push.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
+      - name: Create branch if not exists
+        run: |
+          if [ -z $(git ls-remote --heads origin refs/heads/${{ github.ref_name }}-sf5) ]; then \
+            git checkout -b ${{ github.ref_name }}-sf5; \
+            git push origin ${{ github.ref_name }}-sf5; \
+          fi
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1
@@ -30,7 +36,7 @@ jobs:
       - run: composer sf5
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}.5
+          ref: ${{ github.ref_name }}-sf5
           path: var/sf5/git
       - name: Push changes
         id: push
@@ -42,7 +48,7 @@ jobs:
           git add --all
           if git commit -m 'Synchronized ${{ github.sha }} from ${{ github.ref_name }}'; then \
             git push; \
-            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "changed=true" >> $GITHUB_OUTPUT; \
           fi
 
   composer-validate:
@@ -52,7 +58,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}.5
+          ref: ${{ github.ref_name }}-sf5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 7.2
@@ -67,7 +73,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}.5
+          ref: ${{ github.ref_name }}-sf5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 7.2
@@ -85,7 +91,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}.5
+          ref: ${{ github.ref_name }}-sf5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 7.2
@@ -108,7 +114,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}.5
+          ref: ${{ github.ref_name }}-sf5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
