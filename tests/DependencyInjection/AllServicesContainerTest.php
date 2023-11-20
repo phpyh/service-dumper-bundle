@@ -18,7 +18,7 @@ final class AllServicesContainerTest extends TestCase
     {
         $container = new Container();
         $container->set('public', new \stdClass());
-        $allServicesContainer = new AllServicesContainer(container: $container);
+        $allServicesContainer = new AllServicesContainer($container);
 
         $serviceIds = $allServicesContainer->ids();
 
@@ -27,7 +27,7 @@ final class AllServicesContainerTest extends TestCase
 
     public function testItReturnsPrivateServiceIds(): void
     {
-        $allServicesContainer = new AllServicesContainer(privateServices: $this->createLocator([
+        $allServicesContainer = new AllServicesContainer(new Container(), $this->createLocator([
             'private' => new \stdClass(),
         ]));
 
@@ -41,7 +41,7 @@ final class AllServicesContainerTest extends TestCase
         $public = new \stdClass();
         $container = new Container();
         $container->set('public', $public);
-        $allServicesContainer = new AllServicesContainer(container: $container);
+        $allServicesContainer = new AllServicesContainer($container);
 
         $service = $allServicesContainer->get('public');
 
@@ -51,7 +51,7 @@ final class AllServicesContainerTest extends TestCase
     public function testItReturnsExistingPrivateService(): void
     {
         $private = new \stdClass();
-        $allServicesContainer = new AllServicesContainer(privateServices: $this->createLocator([
+        $allServicesContainer = new AllServicesContainer(new Container(), $this->createLocator([
             'private' => $private,
         ]));
 
