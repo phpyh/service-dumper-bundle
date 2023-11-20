@@ -2,7 +2,6 @@
 
 Symfony console command to dump dependency injection services.
 
-[![PHP Version Require](http://poser.pugx.org/phpyh/service-dumper-bundle/require/php)](https://packagist.org/packages/phpyh/service-dumper-bundle)
 [![Latest Stable Version](https://poser.pugx.org/phpyh/service-dumper-bundle/v/stable.png)](https://packagist.org/packages/phpyh/service-dumper-bundle)
 [![Total Downloads](https://poser.pugx.org/phpyh/service-dumper-bundle/downloads.png)](https://packagist.org/packages/phpyh/service-dumper-bundle)
 [![psalm-level](https://shepherd.dev/github/phpyh/service-dumper-bundle/level.svg)](https://shepherd.dev/github/phpyh/service-dumper-bundle)
