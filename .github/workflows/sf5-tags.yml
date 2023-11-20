@@ -1,0 +1,26 @@
+name: Publish Symfony 5 Version Tags
+
+on:
+  push:
+    tags: ['*.*.*']
+
+permissions:
+  contents: write
+
+jobs:
+  push:
+    # do not run on forks
+    if: github.repository == 'phpyh/service-dumper-bundle'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}.5
+          fetch-depth: 0
+      - run: |
+          HASH=$(git --no-pager log --grep="${{ github.sha }}" -1 --pretty=format:"%H")
+          if [ -z "$HASH" ]; then exit 1; fi
+          git config user.name 'Valentin Udaltsov'
+          git config user.email 'udaltsov.valentin@gmail.com'
+          git tag ${{ github.ref_name }}.5 "$HASH"
+          git push origin ${{ github.ref_name }}.5
