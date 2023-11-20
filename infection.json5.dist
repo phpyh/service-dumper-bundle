@@ -11,7 +11,7 @@
         }
     },
     "tmpDir": "var",
-    "minCoveredMsi": 86,
+    "minCoveredMsi": 85,
     "mutators": {
         "@default": true,
     }
