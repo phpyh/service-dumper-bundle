@@ -8,11 +8,6 @@
          failOnRisky="true"
          failOnWarning="true"
 >
-    <php>
-        <ini name="display_errors" value="1"/>
-        <ini name="error_reporting" value="-1"/>
-    </php>
-
     <testsuites>
         <testsuite name="default">
             <directory>tests</directory>

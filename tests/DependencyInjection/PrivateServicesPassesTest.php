@@ -9,7 +9,6 @@ use PHPyh\ServiceDumperBundle\TestKernel;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -32,11 +31,9 @@ final class PrivateServicesPassesTest extends TestCase
 
     public function testTheyPreserveAPrivateService(): void
     {
-        $kernel = $this->createKernel(static function (ContainerConfigurator $di): void {
-            $di->services()
-                ->set('test', \stdClass::class)
-                ->alias('test.do_not_remove', 'test')
-                    ->public();
+        $kernel = $this->createKernel(static function (ContainerBuilder $container): void {
+            $container->register('test', \stdClass::class);
+            $container->setAlias('test.do_not_remove', 'test')->setPublic(true);
         });
         $kernel->boot();
         $container = $kernel->getContainer();
@@ -50,12 +47,10 @@ final class PrivateServicesPassesTest extends TestCase
 
     public function testTheyPreserveAPrivateAlias(): void
     {
-        $kernel = $this->createKernel(static function (ContainerConfigurator $di): void {
-            $di->services()
-                ->set('test', \stdClass::class)
-                ->alias('test.private', 'test')
-                ->alias('test.private.do_not_remove', 'test.private')
-                    ->public();
+        $kernel = $this->createKernel(static function (ContainerBuilder $container): void {
+            $container->register('test', \stdClass::class);
+            $container->setAlias('test.private', 'test');
+            $container->setAlias('test.private.do_not_remove', 'test.private')->setPublic(true);
         });
         $kernel->boot();
         $container = $kernel->getContainer();
@@ -69,11 +64,9 @@ final class PrivateServicesPassesTest extends TestCase
 
     public function testTheySkipDottedService(): void
     {
-        $kernel = $this->createKernel(static function (ContainerConfigurator $di): void {
-            $di->services()
-                ->set('.test', \stdClass::class)
-                ->alias('.test.do_not_remove', '.test')
-                    ->public();
+        $kernel = $this->createKernel(static function (ContainerBuilder $container): void {
+            $container->register('.test', \stdClass::class);
+            $container->setAlias('.test.do_not_remove', '.test')->setPublic(true);
         });
         $kernel->boot();
         $container = $kernel->getContainer();
@@ -87,12 +80,10 @@ final class PrivateServicesPassesTest extends TestCase
 
     public function testTheySkipDottedAlias(): void
     {
-        $kernel = $this->createKernel(static function (ContainerConfigurator $di): void {
-            $di->services()
-                ->set('test', \stdClass::class)
-                ->alias('.test', 'test')
-                ->alias('.test.do_not_remove', '.test')
-                    ->public();
+        $kernel = $this->createKernel(static function (ContainerBuilder $container): void {
+            $container->register('test', \stdClass::class);
+            $container->setAlias('.test', 'test');
+            $container->setAlias('.test.do_not_remove', '.test')->setPublic(true);
         });
         $kernel->boot();
         $container = $kernel->getContainer();
@@ -105,18 +96,17 @@ final class PrivateServicesPassesTest extends TestCase
     }
 
     /**
-     * @param callable(ContainerConfigurator, ContainerBuilder): void $configureContainer
+     * @param callable(ContainerBuilder): void $configureContainer
      */
     private function createKernel(callable $configureContainer): Kernel
     {
-        return new TestKernel(configureContainer: static function (ContainerConfigurator $di, ContainerBuilder $container) use ($configureContainer): void {
+        return new TestKernel(configureContainer: static function (ContainerBuilder $container) use ($configureContainer): void {
             $container->addCompilerPass(new CollectPrivateServicesPass(), PassConfig::TYPE_BEFORE_REMOVING, -32);
             $container->addCompilerPass(new ResolvePrivateServicesPass(), PassConfig::TYPE_AFTER_REMOVING);
-            $configureContainer($di, $container);
-            $di->services()
-                ->set('phpyh.service_dumper.private_services', ServiceLocator::class)
-                    ->public()
-                    ->args([[]]);
+            $configureContainer($container);
+            $container->register('phpyh.service_dumper.private_services', ServiceLocator::class)
+                ->setPublic(true)
+                ->setArguments([[]]);
         });
     }
 }

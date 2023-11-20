@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PHPyh\ServiceDumperBundle;
 
-use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use PHPyh\ServiceDumperBundle\ServiceDumper\SymfonyVarDumperServiceDumper;
 use PHPyh\ServiceDumperBundle\ServiceDumper\VarDumpServiceDumper;
@@ -15,7 +14,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -25,7 +23,7 @@ final class ServiceDumperBundleConfigurationTest extends TestCase
 {
     public function testItUsesSymfonyVarDumperByDefault(): void
     {
-        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerConfigurator $_di, ContainerBuilder $container): void {
+        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerBuilder $container): void {
             $container->addCompilerPass(new class () implements CompilerPassInterface {
                 public function process(ContainerBuilder $container): void
                 {
@@ -40,8 +38,8 @@ final class ServiceDumperBundleConfigurationTest extends TestCase
 
     public function testServiceDumperCanBeSetToVarDump(): void
     {
-        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerConfigurator $di, ContainerBuilder $container): void {
-            $di->extension('phpyh_service_dumper', ['service_dumper' => 'var_dump']);
+        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerBuilder $container): void {
+            $container->loadFromExtension('phpyh_service_dumper', ['service_dumper' => 'var_dump']);
 
             $container->addCompilerPass(new class () implements CompilerPassInterface {
                 public function process(ContainerBuilder $container): void
@@ -57,8 +55,8 @@ final class ServiceDumperBundleConfigurationTest extends TestCase
 
     public function testServiceDumperCanBeSetToXdebug(): void
     {
-        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerConfigurator $di, ContainerBuilder $container): void {
-            $di->extension('phpyh_service_dumper', ['service_dumper' => 'xdebug']);
+        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerBuilder $container): void {
+            $container->loadFromExtension('phpyh_service_dumper', ['service_dumper' => 'xdebug']);
 
             $container->addCompilerPass(new class () implements CompilerPassInterface {
                 public function process(ContainerBuilder $container): void
@@ -74,9 +72,9 @@ final class ServiceDumperBundleConfigurationTest extends TestCase
 
     public function testServiceDumperCanBeSetToAnyServiceId(): void
     {
-        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerConfigurator $di, ContainerBuilder $container): void {
-            $di->services()->set('test', \stdClass::class);
-            $di->extension('phpyh_service_dumper', ['service_dumper' => 'test']);
+        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerBuilder $container): void {
+            $container->register('test', \stdClass::class);
+            $container->loadFromExtension('phpyh_service_dumper', ['service_dumper' => 'test']);
 
             $container->addCompilerPass(new class () implements CompilerPassInterface {
                 public function process(ContainerBuilder $container): void
@@ -92,7 +90,7 @@ final class ServiceDumperBundleConfigurationTest extends TestCase
 
     public function testItUsesBasicServiceFinderByDefault(): void
     {
-        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerConfigurator $_di, ContainerBuilder $container): void {
+        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerBuilder $container): void {
             $container->addCompilerPass(new class () implements CompilerPassInterface {
                 public function process(ContainerBuilder $container): void
                 {
@@ -107,9 +105,9 @@ final class ServiceDumperBundleConfigurationTest extends TestCase
 
     public function testServiceFinderCanBeSetToAnyServiceId(): void
     {
-        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerConfigurator $di, ContainerBuilder $container): void {
-            $di->services()->set('test', \stdClass::class);
-            $di->extension('phpyh_service_dumper', ['service_finder' => 'test']);
+        $kernel = new TestKernel([ServiceDumperBundle::class], static function (ContainerBuilder $container): void {
+            $container->register('test', \stdClass::class);
+            $container->loadFromExtension('phpyh_service_dumper', ['service_finder' => 'test']);
 
             $container->addCompilerPass(new class () implements CompilerPassInterface {
                 public function process(ContainerBuilder $container): void
