@@ -73,9 +73,11 @@ final class AllServicesContainerTest extends TestCase
 
     /**
      * @param non-empty-array<string, object> $services
+     * @return ServiceLocator<object>
      */
     private function createLocator(array $services): ServiceLocator
     {
+        /** @var ServiceLocator<object> */
         return new ServiceLocator(array_map(
             static fn (object $service): \Closure => static fn (): object => $service,
             $services,

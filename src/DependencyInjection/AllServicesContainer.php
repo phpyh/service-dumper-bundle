@@ -8,7 +8,6 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use Symfony\Contracts\Service\ServiceProviderInterface;
 
 /**
  * @internal
@@ -17,11 +16,11 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 final class AllServicesContainer
 {
     /**
-     * @param ServiceProviderInterface<object> $privateServices
+     * @param ServiceLocator<object> $privateServices
      */
     public function __construct(
         private readonly Container $container = new Container(),
-        private readonly ServiceProviderInterface $privateServices = new ServiceLocator([]),
+        private readonly ServiceLocator $privateServices = new ServiceLocator([]),
     ) {}
 
     /**
@@ -30,13 +29,13 @@ final class AllServicesContainer
     public function ids(): array
     {
         /**
-         * Non empty, because it always contains itself as 'service_container'.
+         * Non-empty, because container always contains itself as 'service_container'.
          * @var non-empty-list<string>
          */
-        $containerIds = $this->container->getServiceIds();
-        $privateIds = array_keys($this->privateServices->getProvidedServices());
-
-        return [...$containerIds, ...$privateIds];
+        return [
+            ...$this->container->getServiceIds(),
+            ...array_keys($this->privateServices->getProvidedServices()),
+        ];
     }
 
     /**
