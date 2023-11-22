@@ -41,7 +41,7 @@
     <stubs>
         <file name="stubs/psr/container/ContainerExceptionInterface.phpstub"/>
         <file name="stubs/symfony/dependency-injection/ContainerBuilder.phpstub"/>
-        <file name="stubs/symfony/service-contracts/ServiceProviderInterface.phpstub"/>
+        <file name="stubs/symfony/dependency-injection/ServiceLocator.phpstub"/>
     </stubs>
 
     <forbiddenFunctions>
