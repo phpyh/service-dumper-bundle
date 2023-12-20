@@ -32,4 +32,9 @@
       <code>is_array($containerIds)</code>
     </RedundantConditionGivenDocblockType>
   </file>
+  <file src="src/ServiceDumperBundle.php">
+    <PossiblyNullReference occurrences="1">
+      <code>scalarNode</code>
+    </PossiblyNullReference>
+  </file>
 </files>
