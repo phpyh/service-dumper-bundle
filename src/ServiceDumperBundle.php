@@ -37,7 +37,7 @@ final class ServiceDumperBundle extends Bundle implements ConfigurationInterface
     }
 
     /**
-     * @psalm-suppress UndefinedMethod, MixedMethodCall, PossiblyNullReference
+     * @psalm-suppress UndefinedMethod, MixedMethodCall
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
